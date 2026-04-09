@@ -21,9 +21,9 @@
   \fancyhead[LO,RE]{\slshape \@proceedingsname}%
   \fancyfoot[C]{}%
 }
+\def\jasse@pagestyle@titleheadheight{12pt}
 \def\jasse@pagestyle@titlehead{%
   \fancyhead[L]{\slshape \@proceedingsname}%
-  \setlength\headheight{12pt}%
 }
 \def\jasse@title@dates{}
 
@@ -42,8 +42,8 @@
     \rm Vol. \@Vol, No. \@No, \@Pages.}%
     \fancyhead[R]{\footnotesize\copyright~%
       \ifx\@copyrightyear\@empty\@Year\else\@copyrightyear\fi\ \@copyrightowner}%
-    \setlength\headheight{40pt}%
   }
+  \def\jasse@pagestyle@titleheadheight{40pt}
   \def\jasse@title@dates{{\small\@Received; \@Accepted; \@Published}}
 \fi
 \expandafter\LoadClass\expandafter[\jasse@classoptions]{article}
@@ -67,7 +67,6 @@
   \RequirePackage[dvipdfmx]{graphicx}
 \fi
 \RequirePackage{authblk}
-\RequirePackage{lastpage}
 \RequirePackage{fancyhdr}
 
 \makeatletter
@@ -145,7 +144,6 @@
 \oldappendix%
 \renewcommand{\thesection}{Appendix \Alph{section}.}}%
 
-\renewcommand\Affilfont{\normalsize}
 \renewcommand\Authands{, }
 \renewcommand{\thesection}{\arabic{section}.}
 \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
@@ -167,6 +165,7 @@
 \def\Pages#1{\gdef\@Pages{#1}}
 
 \def\jasse@pagestyle@titlecommon{%
+  \setlength\headheight{\jasse@pagestyle@titleheadheight}%
   \fancyfoot[C]{\thepage}%
   \renewcommand\headrulewidth{0pt}%
   \renewcommand\footrulewidth{0pt}%
