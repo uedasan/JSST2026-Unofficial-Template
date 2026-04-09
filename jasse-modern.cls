@@ -103,6 +103,19 @@
 
 \makeatletter
 
+\newlength{\jasse@title@topskip}
+\newlength{\jasse@title@aftertitleskip}
+\newlength{\jasse@title@afterauthorskip}
+\newlength{\jasse@title@bottomskip}
+\newlength{\jasse@acknowledgement@beforeskip}
+\newlength{\jasse@acknowledgement@afterskip}
+\setlength{\jasse@title@topskip}{2em}
+\setlength{\jasse@title@aftertitleskip}{1.5em}
+\setlength{\jasse@title@afterauthorskip}{1em}
+\setlength{\jasse@title@bottomskip}{1.5em}
+\setlength{\jasse@acknowledgement@beforeskip}{1.7em}
+\setlength{\jasse@acknowledgement@afterskip}{3mm}
+
 % Mode-specific publication metadata.
 \def\@proceedingsname{JSST2026}
 \def\ProceedingsName#1{\gdef\@proceedingsname{#1}}
@@ -124,32 +137,35 @@
 \def\@Vol{}
 \def\@No{}
 \def\@Pages{}
-\def\jasse@title@topskip{\null\vskip 2em}
-\def\jasse@title@aftertitle{\vskip 1.5em}
-\def\jasse@title@afterauthors{\vskip 1em}
-\def\jasse@title@bottomskip{\vskip 1.5em}
+\def\jasse@title@begin{\begin{center}\let \footnote \thanks}
+\def\jasse@title@end{\end{center}\par}
+\def\jasse@title@topspace{\null\vskip\jasse@title@topskip}
+\def\jasse@title@aftertitle{\vskip\jasse@title@aftertitleskip}
+\def\jasse@title@afterauthors{\vskip\jasse@title@afterauthorskip}
+\def\jasse@title@bottomspace{\vskip\jasse@title@bottomskip}
 \def\jasse@printtitle{{\LARGE\bfseries \@title \par}}
-\def\jasse@printauthors{%
-  {\large \lineskip .5em%
+\def\jasse@printauthortable{%
   \begin{tabular}[t]{c}%
     \@author%
-  \end{tabular}\par}%
+  \end{tabular}%
+}
+\def\jasse@printauthors{%
+  {\large \lineskip .5em%
+  \jasse@printauthortable\par}%
 }
 \def\jasse@printemail{$^*$\texttt{\@email}\par}
 \def\jasse@printdates{\jasse@title@dates}
 \def\@maketitle{%
-\newpage\jasse@title@topskip
-\begin{center}%
-  \let \footnote \thanks%
+\newpage\jasse@title@topspace
+\jasse@title@begin
   \jasse@printtitle
   \jasse@title@aftertitle
   \jasse@printauthors
   \jasse@printemail
   \jasse@title@afterauthors
   \jasse@printdates
-\end{center}%
-  \par%
-  \jasse@title@bottomskip
+\jasse@title@end
+  \jasse@title@bottomspace
   \gdef\@email{}%
 }%
 \long
@@ -166,19 +182,29 @@
 \def\PublishedDate#1{\gdef\@Published{Published: #1}}
 
 % Shared document environments.
+\def\jasse@abstract@begin{\par\noindent}
+\def\jasse@abstract@heading{\textbf{Abstract. }\ignorespaces}
+\def\jasse@abstract@end{\par}
 \renewenvironment{abstract}{%
-\par
-\noindent\textbf{Abstract. }\ignorespaces
-}{\par}
+\jasse@abstract@begin
+\jasse@abstract@heading
+}{\jasse@abstract@end}
 
+\def\jasse@keywords@prefix{\par\vspace{0.5em}\noindent}
+\def\jasse@keywords@heading{\textbf{Keywords: }\ignorespaces}
+\def\jasse@keywords@end{\par}
 \newenvironment{keywords}{%
-\par\vspace{0.5em}%
-\noindent\textbf{Keywords: }\ignorespaces
-}{\par}
+\jasse@keywords@prefix
+\jasse@keywords@heading
+}{\jasse@keywords@end}
+
+\def\jasse@printblockheading#1{%
+\vskip\jasse@acknowledgement@beforeskip
+\noindent{\bfseries{\Large #1}\ }\\[\jasse@acknowledgement@afterskip]
+}
 
 \def\acknowledgement{%
-\vskip 1.7em
-\noindent{\bfseries{\Large Acknowledgement}\ }\\[3mm]
+\jasse@printblockheading{Acknowledgement}
 }
 
 \let\oldappendix\appendix
