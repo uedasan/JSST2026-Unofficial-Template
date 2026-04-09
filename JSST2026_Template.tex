@@ -60,11 +60,11 @@
 % Abstract
 %%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-This is a {\LaTeX} template/instructions for the The 45th International Conference on Simulation Technology (JSST2026).
-This version of the template is written on \today.
-The authors must input paper's title, authors' name, affiliation, and corresponding author's email address.
+This is a {\LaTeX} template/instructions for The 45th International Conference on Simulation Technology (JSST2026).
+This version of the template was prepared on \today.
+The authors must provide the paper title, authors' name, affiliation, and corresponding author's email address.
 Abstract is written here.
-Moreover, the authors must put keywords of the paper below.
+Moreover, the authors must provide keywords below.
 It is essential to adhere to this template because your manuscripts are printed as
 submitted with minimal editing/formatting by publisher.
 Do not modify any formats or styles.
@@ -83,20 +83,20 @@ Computer simulation, Numerical methods
 %%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-This template provides formats and styles for JSST2026 proceeding paper. It is essential to adhere to this template because your manuscript will be published “as is” with mini-mal copy-editing. Do not modify formats (font, font size, paper size, printing area, line space, etc).  Manuscripts to JSST2026 are received via electronic submission only. Author should prepare a manuscript by using the official approval formats (LaTeX or Word style), in which all the styles and formats are prescribed. Use this instruction file as a template.
+This template provides formatting guidelines for JSST2026 proceedings papers. It is essential to adhere to this template because your manuscript will be published “as is” with minimal copy-editing. Do not modify formats (font, font size, paper size, printing area, line space, etc). Manuscripts for JSST2026 must be submitted electronically only. Authors should prepare a manuscript by using the official formats (LaTeX or Word style), in which all the styles and formats are prescribed. Use this instruction file as a template.
 
-\section{Paper length and article charge}
+\section{Paper length}
 The authors prepare their manuscripts according to the guidelines described on the web page:
 \begin{center}
 \texttt{http://jsst-conf.jp/2026/}
 \end{center}
-The LaTeX style file and MS Word template file can be downloaded from this page. 
-The minimum acceptable length of the manuscript is 4 pages, and do not exceed 8 pages of an A4-sized PDF file.
+The LaTeX style file and MS Word template file can be downloaded from this page.
+The minimum acceptable length of the manuscript is 4 pages of an A4-sized PDF file.
 
 \section{Typographical style}
 \subsection{Equations}
 Equations are centered with the equation number (in Arabic) appearing in the right-hand margin, in
-parenthesis:
+parentheses:
 \begin{align}\label{eqn:1}
 	\left\{
 	\begin{array}{ll}
@@ -106,7 +106,7 @@ parenthesis:
 	\end{array}
 	\right.
 \end{align}
-Long equations can be folded in several lines but avoid leading to misinterpretation.
+Long equations can be split across multiple lines but avoid leading to misinterpretation.
 Equations are referenced in the main text as (\ref{eqn:1}).
 
 \subsection{Theorem, Algorithm, etc.}
@@ -115,7 +115,7 @@ The examples of the theorem style are as follows:
 %The followings are examples:
 
 \begin{theorem}[Newton's apple]
-This is a theorem style of template on JASSE.
+This is a theorem style of template on JSST2026 proceedings papers.
 \end{theorem}
 
 \begin{proposition}
@@ -148,32 +148,25 @@ Next Algorithm is written like this.
 
 Theorem, Proposition, Lemma, and Corollary are numbered consecutively. Otherwise, for example, each of Remark and Algorithm is numbered consecutively.
 
-
-
 \subsection{References}
 References should appear at the end of the manuscript, in the order in which they are referred in the main text.
-See the example in this template for different styles for citing a journal paper, a whole book, a contributed chapter in a book, a proceeding paper, a preprint and a web page.
+See the example in this template for different styles for citing a journal paper, a whole book, a contributed chapter in a book, a proceedings paper, a preprint and a web page.
 References to preprints (e.g., arXiv) and web pages are allowed when no suitable published literature exists.
 In such cases, sufficient information such as identifiers, URLs, and access dates must be provided.
 If a referenced preprint is subsequently published in a peer-reviewed journal, authors are strongly encouraged to replace the reference with the final published version in the revised manuscript.
-It is au-thors' responsibility to provide correct information of references.
-Multiple references can be cited by using a comma separated form like this \cite{journal_paper,journal_paper_example,inproceedings}.
-
+It is authors' responsibility to provide correct information of references.
+Multiple references can be cited by using a comma-separated form like this \cite{journal_paper,journal_paper_example,inproceedings}.
 
 \section{Display items (figures, tables, and movies)}
-
 
 \subsection{Figures}
 Figures should be placed in the document.
 Do not submit figures in separate files.
 Use \LaTeX environment ``\verb|\begin{figure}|'' and ``\verb|\end{figure}|'' to place frames for figures.
-Place your figure as close to as the main text where it is  referred.
-Figure position in published paper may differ from that in your original file, when publisher adjusts the final format.
+Place your figure as close as possible to the relevant text.
 Figures are numbered in Arabic numerals.
-Figures are referred as Fig. 1 except at the beginning of a sentence.
+Figures are referred to as Fig. 1 except at the beginning of a sentence.
 Figure captions are placed under corresponding figures.
-
-
 
 \begin{figure}[htb]
 \centering
@@ -182,11 +175,9 @@ Figure captions are placed under corresponding figures.
 \label{Figure example}
 \end{figure}
 
-
-
 \subsection{Tables}
 Tables are placed in the document in the same manner as figures.
-Tables are also referred in Arabic numbers such as Table \ref{Table example}.
+Tables are referred to as Table \ref{Table example}.
 Table captions are placed above the corresponding tables.
 
 \begin{table}[htb]
@@ -197,11 +188,11 @@ Table captions are placed above the corresponding tables.
 $h$ & $M_{h,1}$ & order & $M_{h,1}(f)$ & order & $M_{h,2}$ & order 
 & $M_{h,2}(f)$ &order \\
 \hline
-1/2 &  2.61E-1 & - & 1.81E-1 & - & 1.90E-1 & - & 4.19E-2 & - \\
+1/2 & 2.61E-1 & - & 1.81E-1 & - & 1.90E-1 & - & 4.19E-2 & - \\
 1/4 & 1.37E-1 & 0.93 & 9.8E-2 & 0.89 & 9.63E-2 & 0.98 &1.26E-2 & 1.73\\
-1/8 &  7.08E-2 & 0.95 & 5.0E-2 & 0.96 & 4.84E-2 & 0.99 &3.60E-3 &1.81\\
-1/16 &  3.65E-3 & 0.96 & 2.5E-2 & 0.99 & 2.43E-2 &1.00 &9.96E-4 &1.85\\
-1/32 &  1.85E-4 & 0.98 & 1.3E-2 & 1.00 & 1.21E-2 &1.00 &2.72E-4 &1.88\\
+1/8 & 7.08E-2 & 0.95 & 5.0E-2 & 0.96 & 4.84E-2 & 0.99 &3.60E-3 &1.81\\
+1/16 & 3.65E-3 & 0.96 & 2.5E-2 & 0.99 & 2.43E-2 &1.00 &9.96E-4 &1.85\\
+1/32 & 1.85E-4 & 0.98 & 1.3E-2 & 1.00 & 1.21E-2 &1.00 &2.72E-4 &1.88\\
 \hline
 \end{tabular}
 \label{Table example}
