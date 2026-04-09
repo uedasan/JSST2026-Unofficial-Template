@@ -22,8 +22,8 @@ latexmk -r latexmkrc -c JSST2026_Template.tex
 
 - pull request と push でテンプレート PDF をビルド
 - Actions artifact として PDF を保存
-- `main` または `master` への push 時に GitHub Pages へ公開
+- `main` または `master` への push 時に GitHub Release の asset を更新
 
-GitHub Pages を使う場合は、リポジトリの Settings > Pages で source を `GitHub Actions` に設定してください。
+最新版 PDF の固定 URL:
 
-公開後は `https://<owner>.github.io/<repo>/` に PDF のダウンロードページが配置され、同ページから最新の `JSST2026_Template.pdf` を取得できます。
+`https://github.com/uedasan/JSST2026-Unofficial-Template/releases/download/template-pdf-latest/JSST2026_Template.pdf`
