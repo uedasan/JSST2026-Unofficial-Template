@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - master
   workflow_dispatch:
 
 permissions:
@@ -40,7 +39,7 @@ jobs:
           path: JSST2026_Template.pdf
 
       - name: Publish PDF to GitHub Release
-        if: github.event_name != 'pull_request' && (github.ref_name == 'main' || github.ref_name == 'master')
+        if: github.event_name != 'pull_request' && github.ref_name == 'main'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: template-pdf-latest
