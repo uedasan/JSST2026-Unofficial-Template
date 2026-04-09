@@ -1,0 +1,141 @@
+name: Build and Publish Template PDF
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: template-pdf-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile template PDF
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: JSST2026_Template.tex
+          latexmk_use_lualatex: false
+          latexmk_shell_escape: false
+          latexmk_rc_files: latexmkrc
+          extra_system_packages: fontconfig
+          work_in_root_file_dir: true
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: JSST2026_Template_pdf
+          path: JSST2026_Template.pdf
+
+      - name: Prepare GitHub Pages files
+        if: github.event_name != 'pull_request' && (github.ref_name == 'main' || github.ref_name == 'master')
+        shell: bash
+        run: |
+          mkdir -p site
+          cp JSST2026_Template.pdf site/JSST2026_Template.pdf
+          cat > site/index.html <<'EOF'
+          <!doctype html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>JSST2026 Template PDF</title>
+            <style>
+              :root {
+                color-scheme: light;
+                --bg: #f3f0ea;
+                --panel: #fffdf9;
+                --text: #1f2a30;
+                --accent: #0d5c63;
+                --border: #d8cfc3;
+              }
+              body {
+                margin: 0;
+                font-family: "Segoe UI", "Hiragino Sans", sans-serif;
+                background:
+                  radial-gradient(circle at top left, #fff7e8 0, transparent 28%),
+                  linear-gradient(180deg, #f6f2ea 0%, #ede7dc 100%);
+                color: var(--text);
+              }
+              main {
+                max-width: 760px;
+                margin: 12vh auto;
+                padding: 32px;
+              }
+              .card {
+                background: rgba(255, 253, 249, 0.92);
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                padding: 32px;
+                box-shadow: 0 18px 45px rgba(31, 42, 48, 0.08);
+              }
+              h1 {
+                margin: 0 0 12px;
+                font-size: clamp(2rem, 4vw, 3rem);
+                line-height: 1.05;
+              }
+              p {
+                line-height: 1.7;
+              }
+              a.button {
+                display: inline-block;
+                margin-top: 12px;
+                padding: 12px 18px;
+                border-radius: 999px;
+                background: var(--accent);
+                color: #fff;
+                text-decoration: none;
+                font-weight: 600;
+              }
+              .meta {
+                margin-top: 18px;
+                font-size: 0.95rem;
+                color: #52636a;
+              }
+            </style>
+          </head>
+          <body>
+            <main>
+              <section class="card">
+                <h1>JSST2026 Template PDF</h1>
+                <p>The latest build of the proceedings template is published here from GitHub Actions.</p>
+                <a class="button" href="./JSST2026_Template.pdf">Download PDF</a>
+                <p class="meta">Built from commit ${{ github.sha }}</p>
+              </section>
+            </main>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request' && (github.ref_name == 'main' || github.ref_name == 'master')
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    if: github.event_name != 'pull_request' && (github.ref_name == 'main' || github.ref_name == 'master')
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
