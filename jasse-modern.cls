@@ -8,11 +8,17 @@
 \ProcessOptions\relax
 
 \def\jasse@topmargin{4.6mm}
+% Physical top offset used by geometry. In proceedings mode this can be
+% tuned together with \jasse@headheight to absorb fancyhdr warnings while
+% keeping the visible text block close to the original layout.
+\def\jasse@geometry@top{85.36319pt}
 \def\jasse@headsep{10pt}
 \def\jasse@footskip{30pt}
 \def\jasse@textheight{600pt}
 \def\jasse@columnsep{5mm}
 \def\jasse@textwidth{430pt}
+\def\jasse@geometry@left{89.26999pt}
+\def\jasse@geometry@options{asymmetric,}
 \def\jasse@classoptions{a4paper,twoside,11pt}
 \def\jasse@oddsidemargin{17pt}
 \def\jasse@evensidemargin{17pt}
@@ -28,7 +34,9 @@
 \def\jasse@title@dates{}
 
 \ifjasse@journal
+  \def\jasse@geometry@options{}
   \def\jasse@classoptions{a4paper,11pt}
+  \def\jasse@geometry@left{99.26999pt}
   \def\jasse@oddsidemargin{27pt}
   \def\jasse@evensidemargin{27pt}
   \def\jasse@headheight{10pt}
@@ -46,19 +54,27 @@
   \def\jasse@pagestyle@titleheadheight{40pt}
   \def\jasse@title@dates{{\small\@Received; \@Accepted; \@Published}}
 \fi
+\ifjasse@journal\else
+  % Proceedings mode: a slightly larger headheight can remove fancyhdr
+  % warnings; the top offset below is the corresponding compensation knob.
+  \def\jasse@geometry@top{83.36319pt}
+  \def\jasse@headheight{14pt}
+  \def\jasse@pagestyle@titleheadheight{14pt}
+\fi
 \expandafter\LoadClass\expandafter[\jasse@classoptions]{article}
 
-\oddsidemargin=\jasse@oddsidemargin
-\evensidemargin=\jasse@evensidemargin
-\topmargin=\jasse@topmargin
-\headheight=\jasse@headheight
-\headsep=\jasse@headsep
-\footskip=\jasse@footskip
-\textheight=\jasse@textheight
-\textwidth=\jasse@textwidth
-\columnsep=\jasse@columnsep
-
 \RequirePackage{amsmath,amsthm}
+\RequirePackage[
+  \jasse@geometry@options
+  includehead,
+  left=\jasse@geometry@left,
+  top=\jasse@geometry@top,
+  textwidth=\jasse@textwidth,
+  textheight=\jasse@textheight,
+  headheight=\jasse@headheight,
+  headsep=\jasse@headsep,
+  footskip=\jasse@footskip
+]{geometry}
 \ifLuaTeX
   \RequirePackage{newtxtext,newtxmath}
   \RequirePackage{graphicx}
@@ -68,6 +84,7 @@
 \fi
 \RequirePackage{authblk}
 \RequirePackage{fancyhdr}
+\setlength{\columnsep}{\jasse@columnsep}
 
 \makeatletter
 
