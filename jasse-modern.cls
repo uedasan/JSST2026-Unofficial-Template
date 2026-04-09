@@ -229,20 +229,20 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{remark}{Remark}
 
+\renewcommand\refname{References}
 \renewenvironment{thebibliography}[1]
-     {\section*{References}%
+     {\section*{\refname}%
       \small
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
             \advance\leftmargin\labelsep
+            \@openbib@code
             \usecounter{enumiv}%
             \let\p@enumiv\@empty
             \renewcommand\theenumiv{\@arabic\c@enumiv}%
             \setlength{\itemsep}{2pt}
             \setlength{\parsep}{0pt}
-            \setlength{\parskip}{0pt}
-            \setlength{\topsep}{0pt}
            }%
       \sloppy\clubpenalty4000\widowpenalty4000%
       \sfcode`\.\@m}
