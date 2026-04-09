@@ -26,4 +26,4 @@ latexmk -r latexmkrc -c JSST2026_Template.tex
 
 最新版 PDF の固定 URL:
 
-`https://github.com/uedasan/JSST2026-Unofficial-Template/releases/download/template-pdf-latest/JSST2026_Template.pdf`
+[Download the latest PDF](https://github.com/uedasan/JSST2026-Unofficial-Template/releases/download/template-pdf-latest/JSST2026_Template.pdf)
