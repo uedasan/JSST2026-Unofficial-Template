@@ -47,7 +47,7 @@
   }
   \def\jasse@pagestyle@titlehead{%
     \fancyhead[L]{\footnotesize{\sc \@journalshortname}\\
-    \rm Vol. \@Vol, No. \@No, \@Pages.}%
+    \rmfamily Vol. \@Vol, No. \@No, \@Pages.}%
     \fancyhead[R]{\footnotesize\copyright~%
       \ifx\@copyrightyear\@empty\@Year\else\@copyrightyear\fi\ \@copyrightowner}%
   }
@@ -64,17 +64,32 @@
 \expandafter\LoadClass\expandafter[\jasse@classoptions]{article}
 
 \RequirePackage{amsmath,amsthm}
-\RequirePackage[
-  \jasse@geometry@options
-  includehead,
-  left=\jasse@geometry@left,
-  top=\jasse@geometry@top,
-  textwidth=\jasse@textwidth,
-  textheight=\jasse@textheight,
-  headheight=\jasse@headheight,
-  headsep=\jasse@headsep,
-  footskip=\jasse@footskip
-]{geometry}
+\ifLuaTeX
+  \RequirePackage[
+    \jasse@geometry@options
+    includehead,
+    left=\jasse@geometry@left,
+    top=\jasse@geometry@top,
+    textwidth=\jasse@textwidth,
+    textheight=\jasse@textheight,
+    headheight=\jasse@headheight,
+    headsep=\jasse@headsep,
+    footskip=\jasse@footskip
+  ]{geometry}
+\else
+  \RequirePackage[
+    dvipdfmx,
+    \jasse@geometry@options
+    includehead,
+    left=\jasse@geometry@left,
+    top=\jasse@geometry@top,
+    textwidth=\jasse@textwidth,
+    textheight=\jasse@textheight,
+    headheight=\jasse@headheight,
+    headsep=\jasse@headsep,
+    footskip=\jasse@footskip
+  ]{geometry}
+\fi
 \ifLuaTeX
   \RequirePackage{newtxtext,newtxmath}
   \RequirePackage{graphicx}
@@ -109,22 +124,32 @@
 \def\@Vol{}
 \def\@No{}
 \def\@Pages{}
-\def\@maketitle{%
-\newpage\null\vskip 2em%
-\begin{center}%
-  \let \footnote \thanks%
-  {\LARGE\bf \@title \par}%
-  \vskip 1.5em%
+\def\jasse@title@topskip{\null\vskip 2em}
+\def\jasse@title@aftertitle{\vskip 1.5em}
+\def\jasse@title@afterauthors{\vskip 1em}
+\def\jasse@title@bottomskip{\vskip 1.5em}
+\def\jasse@printtitle{{\LARGE\bfseries \@title \par}}
+\def\jasse@printauthors{%
   {\large \lineskip .5em%
   \begin{tabular}[t]{c}%
     \@author%
   \end{tabular}\par}%
-  $^*$\texttt{\@email}\par%
-  \vskip 1em
-  \jasse@title@dates
+}
+\def\jasse@printemail{$^*$\texttt{\@email}\par}
+\def\jasse@printdates{\jasse@title@dates}
+\def\@maketitle{%
+\newpage\jasse@title@topskip
+\begin{center}%
+  \let \footnote \thanks%
+  \jasse@printtitle
+  \jasse@title@aftertitle
+  \jasse@printauthors
+  \jasse@printemail
+  \jasse@title@afterauthors
+  \jasse@printdates
 \end{center}%
   \par%
-  \vskip 1.5em%
+  \jasse@title@bottomskip
   \gdef\@email{}%
 }%
 \long

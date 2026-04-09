@@ -84,7 +84,7 @@ Computer simulation, Numerical methods
 %%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-This template provides formatting guidelines for JSST2026 proceedings papers. It is essential to adhere to this template because your manuscript will be published ``as is'' with minimal copy-editing. Do not modify formats (font, font size, paper size, printing area, line space, etc). Manuscripts for JSST2026 must be submitted electronically only. Authors should prepare a manuscript by using the official formats (LaTeX or Word style), in which all the styles and formats are prescribed. Use this instruction file as a template.
+This template provides formatting guidelines for JSST2026 proceedings papers. It is essential to adhere to this template because your manuscript will be published “as is” with minimal copy-editing. Do not modify formats (font, font size, paper size, printing area, line space, etc). Manuscripts for JSST2026 must be submitted electronically only. Authors should prepare a manuscript by using the official formats (LaTeX or Word style), in which all the styles and formats are prescribed. Use this instruction file as a template.
 
 \section{Paper length}
 The authors prepare their manuscripts according to the guidelines described on the web page:
@@ -100,15 +100,17 @@ Equations are centered with the equation number (in Arabic) appearing in the rig
 parentheses:
 \begin{align}\label{eqn:1}
   \left\{
-  \begin{array}{ll}
-    i\displaystyle\frac{\partial u}{\partial t}-\Delta u+\kappa|u|^2u=0&\mbox{in}~\Omega\times[0,\infty),\\[2mm]
-    u(x,t)=0&\mbox{in}~\Gamma\times[0,\infty),\\[2mm]
-    u(x,0)=u_0(x).
-  \end{array}
+  \begin{alignedat}{2}
+    i\frac{\partial u}{\partial t}-\Delta u+\kappa|u|^2u &= 0
+      &\qquad& \text{in } \Omega\times[0,\infty),\\[2mm]
+    u(x,t) &= 0
+      && \text{in } \Gamma\times[0,\infty),\\[2mm]
+    u(x,0) &= u_0(x).
+  \end{alignedat}
   \right.
 \end{align}
 Long equations can be split across multiple lines but avoid leading to misinterpretation.
-Equations are referenced in the main text as (\ref{eqn:1}).
+Equations are referenced in the main text as \eqref{eqn:1}.
 
 \subsection{Theorem, Algorithm, etc.}
 The examples of the theorem style are as follows:
@@ -171,14 +173,14 @@ Figure captions are placed under corresponding figures.
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=100mm]{figure.eps}\\
+\includegraphics[width=100mm]{figure}
 \caption{Include all graphics in the manuscript file.}
-\label{Figure example}
+\label{fig:example}
 \end{figure}
 
 \subsection{Tables}
 Tables are placed in the document in the same manner as figures.
-Tables are referred to as Table \ref{Table example}.
+Tables are referred to as Table~\ref{tab:example}.
 Table captions are placed above the corresponding tables.
 
 \begin{table}[htb]
@@ -196,7 +198,7 @@ $h$ & $M_{h,1}$ & order & $M_{h,1}(f)$ & order & $M_{h,2}$ & order
 1/32 & 1.85E-4 & 0.98 & 1.3E-2 & 1.00 & 1.21E-2 &1.00 &2.72E-4 &1.88\\
 \hline
 \end{tabular}
-\label{Table example}
+\label{tab:example}
 \end{table}%
 
 %%%%%%%%%%%%%%%%%%%
