@@ -5,7 +5,7 @@
 \oddsidemargin=17pt
 \evensidemargin=17pt
 \topmargin=4.6mm
-\headheight=14pt
+\headheight=12pt
 \headsep=10pt
 \footskip=30pt
 \textheight=600pt
@@ -103,7 +103,7 @@
    \fancyfoot[C]{\thepage}
    \renewcommand\headrulewidth{0pt}
    \renewcommand\footrulewidth{0pt}
-   \setlength\headheight{14pt}
+   \setlength\headheight{12pt}
    }
 %
 %%%%%%%%%%%%%%%%%%%
