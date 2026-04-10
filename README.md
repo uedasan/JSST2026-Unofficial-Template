@@ -1,51 +1,67 @@
-# JSST2026 Unofficial Template
+# Unofficial Modern JSST2026 Template: jasse-modern
 
-JSST2026 の国際学会プロシーディングス向け LaTeX テンプレートを、GitHub Actions で再現可能にした非公式リポジトリです。
+JSST2026 向け LaTeX テンプレートを、`jasse-modern` クラスとして整理した非公式リポジトリです。
 
-このリポジトリは公式配布元ではありません。テンプレート本体の内容は元の配布物をベースにしつつ、ビルド自動化と配布導線を追加しています。
+このリポジトリは公式配布元ではありません。元の配布物をベースにしつつ、古い記法の整理、LuaLaTeX への対応、モダンなクラス設計への移行を目的に作成しています。
 
-公式サイト:
+オリジナルのテンプレートは公式サイトにあります。JSST2026はこのテンプレートを公式にサポートしていません。投稿時はJSST2026の投稿規程に従ってください。
+
+JSST2026公式サイト:
 [https://jsst-conf.jp/2026/](https://jsst-conf.jp/2026/)
 
-## Latest PDF
+## Automated Build Flow & Latest PDF
+GitHub Actionsを利用して、`main` ブランチへの push 後に最新版を自動ビルドします。最新の PDF は次のリンクからダウンロードできます。
 
 [Download the latest PDF](https://github.com/uedasan/JSST2026-Unofficial-Template/releases/download/template-pdf-latest/JSST2026_Template.pdf)
 
-上のリンクは GitHub Release の固定 URL で、`main` への push 後に最新ビルドへ更新されます。
 
 ## Repository Contents
 
-- `JSST2026_Template.tex`: テンプレート本文
-- `jasse.cls`: クラスファイル
+- `jasse-modern.cls`: `journal` / `proceedings` の両 mode を持つ modern class
+- `JSST2026_Template_modern.tex`: `journal` / `proceedings` を切り替えて使う sample .tex file
 - `jasse.bst`: BibTeX スタイル
 - `JSST2026_refs.bib`: 参考文献サンプル
-- `latexmkrc`: ローカル / CI 共通のビルド設定
-- `.github/workflows/template-pdf.yml`: PDF 自動ビルドと Release 更新
+- `latexmkrc`: `jasse-modern` の既定ビルド設定
+
+
+## Switch Build Mode
+
+[jasse-modern.cls](d:/JSST/JSST2026/JSST2026-Template_bib/jasse-modern.cls) は、1 本のソースファイルから `proceedings` / `journal` の 2 モードを切り替えて使う想定です。
+`proceedings` は JSST2026 プロシーディングス用、`journal` は JASSE の特集号にフルペーパーで投稿するときに使います。
+
+サンプル [JSST2026_Template_modern.tex](d:/JSST/JSST2026/JSST2026-Template_bib/JSST2026_Template_modern.tex) の先頭で、`journal` / `proceedings` のどちらかを有効にして使います。
+```tex
+\documentclass[proceedings]{jasse-modern}
+```
+
+または
+
+```tex
+\documentclass[journal]{jasse-modern}
+```
 
 ## Local Build
 
-このリポジトリは `uplatex + upbibtex + dvipdfmx` を前提に `latexmk` で PDF を生成します。
+既定では upLaTeX でビルドします:
 
 ```powershell
-latexmk -r latexmkrc -pdfdvi JSST2026_Template.tex
+latexmk JSST2026_Template_modern.tex
 ```
 
-生成物は `JSST2026_Template.pdf` です。中間ファイルを削除する場合:
+LuaLaTeX でビルドすることもできます:
 
 ```powershell
-latexmk -r latexmkrc -c JSST2026_Template.tex
+latexmk -lualatex JSST2026_Template_modern.tex
 ```
 
-## GitHub Actions
+## Major Features of jasse-modern
 
-`.github/workflows/template-pdf.yml` は次を自動化します。
-
-- pull request と push でテンプレート PDF をビルド
-- Actions artifact として PDF を保存
-- `main` または `master` への push 時に GitHub Release の `template-pdf-latest` を更新
+- `proceedings` / `journal` の mode 切替
+- `\JasseSetup{...}` によるメタデータの key-value 設定
+- `links` オプションによるリンク有効化
 
 ## Notes
 
-- `JSST2026_Template.pdf` は生成物なので Git 管理していません
-- テンプレートの見た目を変えない方針で、クラスファイルの版面設定は原則オリジナル準拠です
-- このリポジトリはほとんどLLMがつくりました。
+- `jasse-modern` は非公式テンプレートです。見た目を大きく崩さずに使い勝手とビルド性を改善することを目的にしています
+- 参考文献は既定で `BibTeX + jasse.bst` を使います
+- この `jasse-modern.cls` を使用して何か問題が起きたり、JSST2026から投稿を拒否されても作成者はいかなる責任も負いません。
