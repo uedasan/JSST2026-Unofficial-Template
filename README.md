@@ -12,7 +12,7 @@ JSST2026公式サイト:
 ## Automated Build Flow & Latest PDF
 GitHub Actionsを利用して、`main` ブランチへの push 後に最新版を自動ビルドします。最新の PDF は次のリンクからダウンロードできます。
 
-[Download the latest PDF](https://github.com/uedasan/JSST2026-Unofficial-Template/releases/download/template-pdf-latest/JSST2026_Template.pdf)
+[Download the latest PDF](https://github.com/uedasan/JSST2026-Unofficial-Template/releases/download/template-pdf-latest/JSST2026_Template_modern.pdf)
 
 
 ## Repository Contents
