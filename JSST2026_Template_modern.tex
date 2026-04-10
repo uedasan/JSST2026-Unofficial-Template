@@ -1,15 +1,19 @@
-\documentclass{jasse}% Initial setting is in jasse.cls
+%\documentclass[journal]{jasse-modern}
+%\documentclass[proceedings,links]{jasse-modern}% Enable clickable links.
+\documentclass[proceedings]{jasse-modern}% Switch the active mode here.
 %
 %%%%%%%%%%%%%%%%%%%
 % Article information
 %%%%%%%%%%%%%%%%%%%
-\Year{20xx}
-\Vol{xx}
-\No{x}
-\Pages{xx--xx}
-\Received{xx}
-\Accepted{xx}
-\Published{xx}
+\JasseSetup{
+  year = {20xx},
+  vol = {xx},
+  number = {x},
+  pages = {xx--xx},
+  received = {xx},
+  accepted = {xx},
+  published = {xx},
+}
 
 %
 %%%%%%%%%%%%%%%%%%%
@@ -18,8 +22,13 @@
 %%%%%%%%%%%%%%%%%%%
 %\usepackage{color}
 %\usepackage{hyperref}
-\usepackage{url}
+\usepackage{siunitx}
 \newcommand{\A}{\mathcal{A}}
+\newcommand{\mcc}[1]{\multicolumn{1}{c}{#1}}
+\sisetup{
+  detect-all,
+  exponent-product = \times,
+}
 %%%%%%%%%%%%%%%%%%%
 %
 %
@@ -84,7 +93,7 @@ Computer simulation, Numerical methods
 %%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-This template provides formatting guidelines for JSST2026 proceedings papers. It is essential to adhere to this template because your manuscript will be published ``as is'' with minimal copy-editing. Do not modify formats (font, font size, paper size, printing area, line space, etc). Manuscripts for JSST2026 must be submitted electronically only. Authors should prepare a manuscript by using the official formats (LaTeX or Word style), in which all the styles and formats are prescribed. Use this instruction file as a template.
+This template provides formatting guidelines for JSST2026 proceedings papers. It is essential to adhere to this template because your manuscript will be published “as is” with minimal copy-editing. Do not modify formats (font, font size, paper size, printing area, line space, etc). Authors should prepare a manuscript by using the official formats (LaTeX or Word style), in which all the styles and formats are prescribed. Use this instruction file as a template. Manuscripts for JSST2026 must be submitted electronically only.
 
 \section{Paper length}
 The authors prepare their manuscripts according to the guidelines described on the web page:
@@ -99,20 +108,22 @@ The minimum acceptable length of the manuscript is 4 pages of an A4-sized PDF fi
 Equations are centered with the equation number (in Arabic) appearing in the right-hand margin, in
 parentheses:
 \begin{align}\label{eqn:1}
-	\left\{
-	\begin{array}{ll}
-		i\displaystyle\frac{\partial u}{\partial t}-\Delta u+\kappa|u|^2u=0&\mbox{in}~\Omega\times[0,\infty),\\[2mm]
-		u(x,t)=0&\mbox{in}~\Gamma\times[0,\infty),\\[2mm]
-		u(x,0)=u_0(x).
-	\end{array}
-	\right.
+  \left\{
+  \begin{alignedat}{2}
+    i\frac{\partial u}{\partial t}-\Delta u+\kappa|u|^2u &= 0
+      &\qquad& \text{in } \Omega\times[0,\infty),\\[2mm]
+    u(x,t) &= 0
+      && \text{in } \Gamma\times[0,\infty),\\[2mm]
+    u(x,0) &= u_0(x).
+  \end{alignedat}
+  \right.
 \end{align}
 Long equations can be split across multiple lines but avoid leading to misinterpretation.
-Equations are referenced in the main text as (\ref{eqn:1}).
+Equations are referenced in the main text as \eqref{eqn:1}.
 
 \subsection{Theorem, Algorithm, etc.}
 The examples of the theorem style are as follows:
-%Theorem style is already included in jasse.cls.
+%Theorem style is already included in jasse-modern.cls.
 %The followings are examples:
 
 \begin{theorem}[Newton's apple]
@@ -163,7 +174,7 @@ Multiple references can be cited by using a comma-separated form like this \cite
 \subsection{Figures}
 Figures should be placed in the document.
 Do not submit figures in separate files.
-Use \LaTeX environment ``\verb|\begin{figure}|'' and ``\verb|\end{figure}|'' to place frames for figures.
+Use \LaTeX\ environment ``\verb|\begin{figure}|'' and ``\verb|\end{figure}|'' to place frames for figures.
 Place your figure as close as possible to the relevant text.
 Figures are numbered in Arabic numerals.
 Figures are referred to as Fig. 1 except at the beginning of a sentence.
@@ -171,32 +182,43 @@ Figure captions are placed under corresponding figures.
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=100mm]{figure.pdf}\\
+\includegraphics[width=100mm]{figure.pdf}
 \caption{Include all graphics in the manuscript file.}
-\label{Figure example}
+\label{fig:example}
 \end{figure}
 
 \subsection{Tables}
 Tables are placed in the document in the same manner as figures.
-Tables are referred to as Table \ref{Table example}.
+Tables are referred to as Table~\ref{tab:example}.
 Table captions are placed above the corresponding tables.
 
 \begin{table}[htb]
 \caption{Table example}
 \centering
-\begin{tabular}{c||cccc|cccc}
+\begin{tabular}{
+  c||
+  S[table-format=1.2e-1]
+  S[table-format=1.2]
+  S[table-format=1.2e-1]
+  S[table-format=1.2]
+  S[table-format=1.2e-1]
+  S[table-format=1.2]
+  S[table-format=1.2e-1]
+  S[table-format=1.2]
+}
 \hline
-$h$ & $M_{h,1}$ & order & $M_{h,1}(f)$ & order & $M_{h,2}$ & order 
-& $M_{h,2}(f)$ &order \\
+\multicolumn{1}{c||}{$h$} & \mcc{$M_{h,1}$} & \mcc{order} &
+\mcc{$M_{h,1}(f)$} & \mcc{order} & \mcc{$M_{h,2}$} &
+\mcc{order} & \mcc{$M_{h,2}(f)$} & \mcc{order} \\
 \hline
-1/2 & 2.61E-1 & - & 1.81E-1 & - & 1.90E-1 & - & 4.19E-2 & - \\
-1/4 & 1.37E-1 & 0.93 & 9.8E-2 & 0.89 & 9.63E-2 & 0.98 &1.26E-2 & 1.73\\
-1/8 & 7.08E-2 & 0.95 & 5.0E-2 & 0.96 & 4.84E-2 & 0.99 &3.60E-3 &1.81\\
-1/16 & 3.65E-3 & 0.96 & 2.5E-2 & 0.99 & 2.43E-2 &1.00 &9.96E-4 &1.85\\
-1/32 & 1.85E-4 & 0.98 & 1.3E-2 & 1.00 & 1.21E-2 &1.00 &2.72E-4 &1.88\\
+1/2 & 2.61e-1 & \mcc{-} & 1.81e-1 & \mcc{-} & 1.90e-1 & \mcc{-} & 4.19e-2 & \mcc{-} \\
+1/4 & 1.37e-1 & 0.93 & 9.8e-2 & 0.89 & 9.63e-2 & 0.98 & 1.26e-2 & 1.73 \\
+1/8 & 7.08e-2 & 0.95 & 5.0e-2 & 0.96 & 4.84e-2 & 0.99 & 3.60e-3 & 1.81 \\
+1/16 & 3.65e-3 & 0.96 & 2.5e-2 & 0.99 & 2.43e-2 & 1.00 & 9.96e-4 & 1.85 \\
+1/32 & 1.85e-4 & 0.98 & 1.3e-2 & 1.00 & 1.21e-2 & 1.00 & 2.72e-4 & 1.88 \\
 \hline
 \end{tabular}
-\label{Table example}
+\label{tab:example}
 \end{table}%
 
 %%%%%%%%%%%%%%%%%%%

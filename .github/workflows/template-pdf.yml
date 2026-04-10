@@ -1,4 +1,4 @@
-name: Build and Publish Template PDF
+name: Build and Publish Modern Template PDF
 
 on:
   pull_request:
@@ -22,10 +22,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Compile template PDF
+      - name: Compile modern template PDF
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: JSST2026_Template.tex
+          root_file: JSST2026_Template_modern.tex
           latexmk_use_lualatex: false
           latexmk_shell_escape: false
           latexmk_rc_files: latexmkrc
@@ -35,16 +35,16 @@ jobs:
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
-          name: JSST2026_Template_pdf
-          path: JSST2026_Template.pdf
+          name: JSST2026_Template_modern_pdf
+          path: JSST2026_Template_modern.pdf
 
       - name: Publish PDF to GitHub Release
         if: github.event_name != 'pull_request' && github.ref_name == 'main'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: template-pdf-latest
-          name: Latest Template PDF
+          name: Latest Modern Template PDF
           body: |
-            Latest JSST2026 template PDF built from `${{ github.sha }}`.
-          files: JSST2026_Template.pdf
+            Latest modern JSST2026 template PDF built from `${{ github.sha }}`.
+          files: JSST2026_Template_modern.pdf
           overwrite_files: true
