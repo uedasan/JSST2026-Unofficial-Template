@@ -1,11 +1,15 @@
 \ProvidesClass{jasse-modern}[2026/04/10 v0.2 Modernized JSST/JASSE class]
+% Unofficial modernized class prepared by Ryosuke Ueda.
 \RequirePackage{iftex}
+\RequirePackage{kvoptions}
+\RequirePackage{xparse}
 
-\newif\ifjasse@journal
-\DeclareOption{journal}{\jasse@journaltrue}
-\DeclareOption{proceedings}{\jasse@journalfalse}
-\ExecuteOptions{proceedings}
-\ProcessOptions\relax
+\SetupKeyvalOptions{family=jasse,prefix=jasse@opt@}
+\DeclareBoolOption[false]{journal}
+\DeclareComplementaryOption{proceedings}{journal}
+\DeclareBoolOption[false]{links}
+\DeclareStringOption[auto]{fontscheme}
+\ProcessKeyvalOptions*
 
 \def\jasse@topmargin{4.6mm}
 % Physical top offset used by geometry. In proceedings mode this can be
@@ -33,7 +37,7 @@
 }
 \def\jasse@title@dates{}
 
-\ifjasse@journal
+\ifjasse@opt@journal
   \def\jasse@geometry@options{}
   \def\jasse@classoptions{a4paper,11pt}
   \def\jasse@geometry@left{99.26999pt}
@@ -54,7 +58,7 @@
   \def\jasse@pagestyle@titleheadheight{40pt}
   \def\jasse@title@dates{{\small\@Received; \@Accepted; \@Published}}
 \fi
-\ifjasse@journal\else
+\ifjasse@opt@journal\else
   % Proceedings mode: a slightly larger headheight can remove fancyhdr
   % warnings; the top offset below is the corresponding compensation knob.
   \def\jasse@geometry@top{83.36319pt}
@@ -90,12 +94,50 @@
     footskip=\jasse@footskip
   ]{geometry}
 \fi
+\newif\ifjasse@font@newtx
+\edef\jasse@fontscheme@requested{\jasse@opt@fontscheme}
+\def\jasse@fontscheme@auto{auto}
+\def\jasse@fontscheme@newtx{newtx}
+\def\jasse@fontscheme@txfonts{txfonts}
 \ifLuaTeX
+  \jasse@font@newtxtrue
+  \ifx\jasse@fontscheme@requested\jasse@fontscheme@txfonts
+    \ClassWarningNoLine{jasse-modern}{fontscheme=txfonts is ignored under LuaLaTeX; using newtx}%
+  \fi
+\else
+  \ifx\jasse@fontscheme@requested\jasse@fontscheme@newtx
+    \jasse@font@newtxtrue
+  \else
+    \ifx\jasse@fontscheme@requested\jasse@fontscheme@auto
+      \jasse@font@newtxfalse
+    \else
+      \ifx\jasse@fontscheme@requested\jasse@fontscheme@txfonts
+        \jasse@font@newtxfalse
+      \else
+        \ClassWarningNoLine{jasse-modern}{Unknown fontscheme '\jasse@opt@fontscheme'; using txfonts for upLaTeX}%
+        \jasse@font@newtxfalse
+      \fi
+    \fi
+  \fi
+\fi
+\ifjasse@font@newtx
   \RequirePackage{newtxtext,newtxmath}
-  \RequirePackage{graphicx}
 \else
   \RequirePackage[varg]{txfonts}
+\fi
+\ifLuaTeX
+  \RequirePackage{graphicx}
+\else
   \RequirePackage[dvipdfmx]{graphicx}
+\fi
+\ifjasse@opt@links
+  \ifLuaTeX
+    \RequirePackage[hidelinks]{hyperref}
+  \else
+    \RequirePackage[dvipdfmx,hidelinks]{hyperref}
+  \fi
+\else
+  \RequirePackage{url}
 \fi
 \RequirePackage{authblk}
 \RequirePackage{fancyhdr}
@@ -118,15 +160,20 @@
 
 % Mode-specific publication metadata.
 \def\@proceedingsname{JSST2026}
-\def\ProceedingsName#1{\gdef\@proceedingsname{#1}}
+\newcommand{\jasse@set@proceedingsname}[1]{\gdef\@proceedingsname{#1}}
+\NewDocumentCommand{\ProceedingsName}{m}{\jasse@set@proceedingsname{#1}}
 \def\@journalname{Journal of Advanced Simulation in Science and Engineering}
-\def\JournalName#1{\gdef\@journalname{#1}}
+\newcommand{\jasse@set@journalname}[1]{\gdef\@journalname{#1}}
+\NewDocumentCommand{\JournalName}{m}{\jasse@set@journalname{#1}}
 \def\@journalshortname{J.~Adv.~Simulat.~Sci.~Eng.}
-\def\JournalShortName#1{\gdef\@journalshortname{#1}}
+\newcommand{\jasse@set@journalshortname}[1]{\gdef\@journalshortname{#1}}
+\NewDocumentCommand{\JournalShortName}{m}{\jasse@set@journalshortname{#1}}
 \def\@copyrightyear{}
-\def\CopyrightYear#1{\gdef\@copyrightyear{#1}}
+\newcommand{\jasse@set@copyrightyear}[1]{\gdef\@copyrightyear{#1}}
+\NewDocumentCommand{\CopyrightYear}{m}{\jasse@set@copyrightyear{#1}}
 \def\@copyrightowner{Japan Society for Simulation Technology}
-\def\CopyrightOwner#1{\gdef\@copyrightowner{#1}}
+\newcommand{\jasse@set@copyrightowner}[1]{\gdef\@copyrightowner{#1}}
+\NewDocumentCommand{\CopyrightOwner}{m}{\jasse@set@copyrightowner{#1}}
 
 % Shared title metadata.
 \def\@email{}
@@ -168,18 +215,20 @@
   \jasse@title@bottomspace
   \gdef\@email{}%
 }%
-\long
-\def\email#1{\long\gdef\@email{#1}}%
+\NewDocumentCommand{\email}{+m}{\gdef\@email{#1}}%
 
 % Journal-only publication dates.
-\def\Received#1{\gdef\@Received{Received: #1}}
-\def\Accepted#1{\gdef\@Accepted{Accepted: #1}}
-\def\Published#1{\gdef\@Published{Published: #1}}
+\newcommand{\jasse@set@received}[1]{\gdef\@Received{Received: #1}}
+\newcommand{\jasse@set@accepted}[1]{\gdef\@Accepted{Accepted: #1}}
+\newcommand{\jasse@set@published}[1]{\gdef\@Published{Published: #1}}
+\NewDocumentCommand{\Received}{m}{\jasse@set@received{#1}}
+\NewDocumentCommand{\Accepted}{m}{\jasse@set@accepted{#1}}
+\NewDocumentCommand{\Published}{m}{\jasse@set@published{#1}}
 
 % Legacy aliases kept for compatibility with journal-style inputs.
-\def\ReceivedDate#1{\gdef\@Received{Received: #1}}
-\def\AcceptedDate#1{\gdef\@Accepted{Accepted: #1}}
-\def\PublishedDate#1{\gdef\@Published{Published: #1}}
+\NewDocumentCommand{\ReceivedDate}{m}{\Received{#1}}
+\NewDocumentCommand{\AcceptedDate}{m}{\Accepted{#1}}
+\NewDocumentCommand{\PublishedDate}{m}{\Published{#1}}
 
 % Shared document environments.
 \def\jasse@abstract@begin{\par\noindent}
@@ -227,10 +276,30 @@
 \renewcommand{\footrulewidth}{0pt}
 
 % Journal issue metadata. Proceedings mode accepts these but does not render them.
-\def\Year#1{\gdef\@Year{#1}}
-\def\Vol#1{\gdef\@Vol{#1}}
-\def\No#1{\gdef\@No{#1}}
-\def\Pages#1{\gdef\@Pages{#1}}
+\newcommand{\jasse@set@year}[1]{\gdef\@Year{#1}}
+\newcommand{\jasse@set@vol}[1]{\gdef\@Vol{#1}}
+\newcommand{\jasse@set@no}[1]{\gdef\@No{#1}}
+\newcommand{\jasse@set@pages}[1]{\gdef\@Pages{#1}}
+\NewDocumentCommand{\Year}{m}{\jasse@set@year{#1}}
+\NewDocumentCommand{\Vol}{m}{\jasse@set@vol{#1}}
+\NewDocumentCommand{\No}{m}{\jasse@set@no{#1}}
+\NewDocumentCommand{\Pages}{m}{\jasse@set@pages{#1}}
+\define@key{jassemeta}{proceedings-name}{\ProceedingsName{#1}}
+\define@key{jassemeta}{journal-name}{\JournalName{#1}}
+\define@key{jassemeta}{journal-short-name}{\JournalShortName{#1}}
+\define@key{jassemeta}{copyright-year}{\CopyrightYear{#1}}
+\define@key{jassemeta}{copyright-owner}{\CopyrightOwner{#1}}
+\define@key{jassemeta}{received}{\Received{#1}}
+\define@key{jassemeta}{accepted}{\Accepted{#1}}
+\define@key{jassemeta}{published}{\Published{#1}}
+\define@key{jassemeta}{year}{\Year{#1}}
+\define@key{jassemeta}{vol}{\Vol{#1}}
+\define@key{jassemeta}{no}{\No{#1}}
+\define@key{jassemeta}{number}{\No{#1}}
+\define@key{jassemeta}{pages}{\Pages{#1}}
+\NewDocumentCommand{\JasseSetup}{m}{\setkeys{jassemeta}{#1}}
+\NewDocumentCommand{\ProceedingsSetup}{m}{\setkeys{jassemeta}{#1}}
+\NewDocumentCommand{\JournalSetup}{m}{\setkeys{jassemeta}{#1}}
 
 \def\jasse@pagestyle@titlecommon{%
   \setlength\headheight{\jasse@pagestyle@titleheadheight}%
