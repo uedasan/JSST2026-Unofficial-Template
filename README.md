@@ -64,4 +64,6 @@ latexmk -lualatex JSST2026_Template_modern.tex
 
 - `jasse-modern` は非公式テンプレートです。見た目を大きく崩さずに使い勝手とビルド性を改善することを目的にしています
 - 参考文献は既定で `BibTeX + jasse.bst` を使います
+- `\JasseSetup{...}` で `no` と `number` の両方を指定した場合は、後に書いた値が優先されます
+- `links` を付けない既定設定では、URL は表示のみで、クリック可否は PDF viewer 側の自動判定に依存します
 - この `jasse-modern.cls` を使用して何か問題が起きたり、JSST2026から投稿を拒否されても作成者はいかなる責任も負いません。

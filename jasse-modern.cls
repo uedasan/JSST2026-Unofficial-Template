@@ -3,6 +3,7 @@
 \RequirePackage{iftex}
 \RequirePackage{kvoptions}
 \RequirePackage{xparse}
+\ExplSyntaxOn
 
 \SetupKeyvalOptions{family=jasse,prefix=jasse@opt@}
 \DeclareBoolOption[false]{journal}
@@ -11,7 +12,6 @@
 \DeclareStringOption[auto]{fontscheme}
 \ProcessKeyvalOptions*
 
-\def\jasse@topmargin{4.6mm}
 % Physical top offset used by geometry. In proceedings mode this can be
 % tuned together with \jasse@headheight to absorb fancyhdr warnings while
 % keeping the visible text block close to the original layout.
@@ -24,8 +24,6 @@
 \def\jasse@geometry@left{89.26999pt}
 \def\jasse@geometry@options{asymmetric,}
 \def\jasse@classoptions{a4paper,twoside,11pt}
-\def\jasse@oddsidemargin{17pt}
-\def\jasse@evensidemargin{17pt}
 \def\jasse@headheight{12pt}
 \def\jasse@pagestyle@running{%
   \fancyhead[LO,RE]{\slshape \@proceedingsname}%
@@ -41,9 +39,7 @@
   \def\jasse@geometry@options{}
   \def\jasse@classoptions{a4paper,11pt}
   \def\jasse@geometry@left{99.26999pt}
-  \def\jasse@oddsidemargin{27pt}
-  \def\jasse@evensidemargin{27pt}
-  \def\jasse@headheight{10pt}
+  \def\jasse@headheight{14pt}
   \def\jasse@textwidth{400pt}
   \def\jasse@pagestyle@running{%
     \fancyhead[R]{\slshape \@journalname}%
@@ -96,9 +92,9 @@
 \fi
 \newif\ifjasse@font@newtx
 \edef\jasse@fontscheme@requested{\jasse@opt@fontscheme}
-\def\jasse@fontscheme@auto{auto}
-\def\jasse@fontscheme@newtx{newtx}
-\def\jasse@fontscheme@txfonts{txfonts}
+\newcommand{\jasse@fontscheme@auto}{auto}
+\newcommand{\jasse@fontscheme@newtx}{newtx}
+\newcommand{\jasse@fontscheme@txfonts}{txfonts}
 \ifLuaTeX
   \jasse@font@newtxtrue
   \ifx\jasse@fontscheme@requested\jasse@fontscheme@txfonts
@@ -176,32 +172,32 @@
 \NewDocumentCommand{\CopyrightOwner}{m}{\jasse@set@copyrightowner{#1}}
 
 % Shared title metadata.
-\def\@email{}
-\def\@Received{}
-\def\@Accepted{}
-\def\@Published{}
-\def\@Year{}
-\def\@Vol{}
-\def\@No{}
-\def\@Pages{}
-\def\jasse@title@begin{\begin{center}\let \footnote \thanks}
-\def\jasse@title@end{\end{center}\par}
-\def\jasse@title@topspace{\null\vskip\jasse@title@topskip}
-\def\jasse@title@aftertitle{\vskip\jasse@title@aftertitleskip}
-\def\jasse@title@afterauthors{\vskip\jasse@title@afterauthorskip}
-\def\jasse@title@bottomspace{\vskip\jasse@title@bottomskip}
-\def\jasse@printtitle{{\LARGE\bfseries \@title \par}}
-\def\jasse@printauthortable{%
+\newcommand{\@email}{}
+\newcommand{\@Received}{}
+\newcommand{\@Accepted}{}
+\newcommand{\@Published}{}
+\newcommand{\@Year}{}
+\newcommand{\@Vol}{}
+\newcommand{\@No}{}
+\newcommand{\@Pages}{}
+\newcommand{\jasse@title@begin}{\begin{center}\let \footnote \thanks}
+\newcommand{\jasse@title@end}{\end{center}\par}
+\newcommand{\jasse@title@topspace}{\null\vskip\jasse@title@topskip}
+\newcommand{\jasse@title@aftertitle}{\vskip\jasse@title@aftertitleskip}
+\newcommand{\jasse@title@afterauthors}{\vskip\jasse@title@afterauthorskip}
+\newcommand{\jasse@title@bottomspace}{\vskip\jasse@title@bottomskip}
+\newcommand{\jasse@printtitle}{{\LARGE\bfseries \@title \par}}
+\newcommand{\jasse@printauthortable}{%
   \begin{tabular}[t]{c}%
     \@author%
   \end{tabular}%
 }
-\def\jasse@printauthors{%
+\newcommand{\jasse@printauthors}{%
   {\large \lineskip .5em%
   \jasse@printauthortable\par}%
 }
-\def\jasse@printemail{$^*$\texttt{\@email}\par}
-\def\jasse@printdates{\jasse@title@dates}
+\newcommand{\jasse@printemail}{$^*$\texttt{\@email}\par}
+\newcommand{\jasse@printdates}{\jasse@title@dates}
 \def\@maketitle{%
 \newpage\jasse@title@topspace
 \jasse@title@begin
@@ -231,23 +227,23 @@
 \NewDocumentCommand{\PublishedDate}{m}{\Published{#1}}
 
 % Shared document environments.
-\def\jasse@abstract@begin{\par\noindent}
-\def\jasse@abstract@heading{\textbf{Abstract. }\ignorespaces}
-\def\jasse@abstract@end{\par}
+\newcommand{\jasse@abstract@begin}{\par\noindent}
+\newcommand{\jasse@abstract@heading}{\textbf{Abstract. }\ignorespaces}
+\newcommand{\jasse@abstract@end}{\par}
 \renewenvironment{abstract}{%
 \jasse@abstract@begin
 \jasse@abstract@heading
 }{\jasse@abstract@end}
 
-\def\jasse@keywords@prefix{\par\vspace{0.5em}\noindent}
-\def\jasse@keywords@heading{\textbf{Keywords: }\ignorespaces}
-\def\jasse@keywords@end{\par}
+\newcommand{\jasse@keywords@prefix}{\par\vspace{0.5em}\noindent}
+\newcommand{\jasse@keywords@heading}{\textbf{Keywords: }\ignorespaces}
+\newcommand{\jasse@keywords@end}{\par}
 \newenvironment{keywords}{%
 \jasse@keywords@prefix
 \jasse@keywords@heading
 }{\jasse@keywords@end}
 
-\def\jasse@printblockheading#1{%
+\newcommand{\jasse@printblockheading}[1]{%
 \vskip\jasse@acknowledgement@beforeskip
 \noindent{\bfseries{\Large #1}\ }\\[\jasse@acknowledgement@afterskip]
 }
@@ -284,22 +280,52 @@
 \NewDocumentCommand{\Vol}{m}{\jasse@set@vol{#1}}
 \NewDocumentCommand{\No}{m}{\jasse@set@no{#1}}
 \NewDocumentCommand{\Pages}{m}{\jasse@set@pages{#1}}
-\define@key{jassemeta}{proceedings-name}{\ProceedingsName{#1}}
-\define@key{jassemeta}{journal-name}{\JournalName{#1}}
-\define@key{jassemeta}{journal-short-name}{\JournalShortName{#1}}
-\define@key{jassemeta}{copyright-year}{\CopyrightYear{#1}}
-\define@key{jassemeta}{copyright-owner}{\CopyrightOwner{#1}}
-\define@key{jassemeta}{received}{\Received{#1}}
-\define@key{jassemeta}{accepted}{\Accepted{#1}}
-\define@key{jassemeta}{published}{\Published{#1}}
-\define@key{jassemeta}{year}{\Year{#1}}
-\define@key{jassemeta}{vol}{\Vol{#1}}
-\define@key{jassemeta}{no}{\No{#1}}
-\define@key{jassemeta}{number}{\No{#1}}
-\define@key{jassemeta}{pages}{\Pages{#1}}
-\NewDocumentCommand{\JasseSetup}{m}{\setkeys{jassemeta}{#1}}
-\NewDocumentCommand{\ProceedingsSetup}{m}{\setkeys{jassemeta}{#1}}
-\NewDocumentCommand{\JournalSetup}{m}{\setkeys{jassemeta}{#1}}
+\bool_new:N \l__jasse_meta_no_seen_bool
+\bool_new:N \l__jasse_meta_number_seen_bool
+\msg_new:nnn { jasse-modern } { unknown-metadata-key }
+  { Unknown~metadata~key~'#1'~ignored. }
+\msg_new:nnn { jasse-modern } { duplicate-number-key }
+  { Both~'no'~and~'number'~were~given~in~\string\JasseSetup;~the~later~value~wins. }
+\cs_new_protected:Npn \jasse_meta_handle_no:n #1
+  {
+    \bool_if:NT \l__jasse_meta_number_seen_bool
+      { \msg_warning:nn { jasse-modern } { duplicate-number-key } }
+    \bool_set_true:N \l__jasse_meta_no_seen_bool
+    \No{#1}
+  }
+\cs_new_protected:Npn \jasse_meta_handle_number:n #1
+  {
+    \bool_if:NT \l__jasse_meta_no_seen_bool
+      { \msg_warning:nn { jasse-modern } { duplicate-number-key } }
+    \bool_set_true:N \l__jasse_meta_number_seen_bool
+    \No{#1}
+  }
+\keys_define:nn { jasse / meta }
+  {
+    proceedings-name    .code:n = \ProceedingsName{#1},
+    journal-name        .code:n = \JournalName{#1},
+    journal-short-name  .code:n = \JournalShortName{#1},
+    copyright-year      .code:n = \CopyrightYear{#1},
+    copyright-owner     .code:n = \CopyrightOwner{#1},
+    received            .code:n = \Received{#1},
+    accepted            .code:n = \Accepted{#1},
+    published           .code:n = \Published{#1},
+    year                .code:n = \Year{#1},
+    vol                 .code:n = \Vol{#1},
+    no                  .code:n = \jasse_meta_handle_no:n {#1},
+    number              .code:n = \jasse_meta_handle_number:n {#1},
+    pages               .code:n = \Pages{#1},
+    unknown .code:n     = \msg_warning:nnn { jasse-modern } { unknown-metadata-key } {#1},
+  }
+\cs_new_protected:Npn \jasse_meta_setup:n #1
+  {
+    \bool_set_false:N \l__jasse_meta_no_seen_bool
+    \bool_set_false:N \l__jasse_meta_number_seen_bool
+    \keys_set:nn { jasse / meta } {#1}
+  }
+\NewDocumentCommand{\JasseSetup}{m}{\jasse_meta_setup:n {#1}}
+\NewDocumentCommand{\ProceedingsSetup}{m}{\jasse_meta_setup:n {#1}}
+\NewDocumentCommand{\JournalSetup}{m}{\jasse_meta_setup:n {#1}}
 
 \def\jasse@pagestyle@titlecommon{%
   \setlength\headheight{\jasse@pagestyle@titleheadheight}%
@@ -343,4 +369,5 @@
       \sfcode`\.\@m}
      {\endlist}
 
+\ExplSyntaxOff
 \makeatother
