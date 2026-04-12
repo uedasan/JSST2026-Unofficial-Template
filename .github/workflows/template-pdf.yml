@@ -38,6 +38,12 @@ jobs:
           name: JSST2026_Template_modern_pdf
           path: JSST2026_Template_modern.pdf
 
+      - name: Move latest release tag to current commit
+        if: github.event_name != 'pull_request' && github.ref_name == 'main'
+        run: |
+          git tag -f template-pdf-latest "$GITHUB_SHA"
+          git push --force origin refs/tags/template-pdf-latest
+
       - name: Publish PDF to GitHub Release
         if: github.event_name != 'pull_request' && github.ref_name == 'main'
         uses: softprops/action-gh-release@v2
