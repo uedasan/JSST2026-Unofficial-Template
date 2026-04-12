@@ -64,7 +64,19 @@
 \expandafter\LoadClass\expandafter[\jasse@classoptions]{article}
 
 \RequirePackage{amsmath,amsthm}
-\ifLuaTeX
+\ifPDFTeX
+  \RequirePackage[
+    \jasse@geometry@options
+    includehead,
+    left=\jasse@geometry@left,
+    top=\jasse@geometry@top,
+    textwidth=\jasse@textwidth,
+    textheight=\jasse@textheight,
+    headheight=\jasse@headheight,
+    headsep=\jasse@headsep,
+    footskip=\jasse@footskip
+  ]{geometry}
+\else\ifLuaTeX
   \RequirePackage[
     \jasse@geometry@options
     includehead,
@@ -89,7 +101,7 @@
     headsep=\jasse@headsep,
     footskip=\jasse@footskip
   ]{geometry}
-\fi
+\fi\fi
 \newif\ifjasse@font@newtx
 \edef\jasse@fontscheme@requested{\jasse@opt@fontscheme}
 \newcommand{\jasse@fontscheme@auto}{auto}
@@ -121,17 +133,21 @@
 \else
   \RequirePackage[varg]{txfonts}
 \fi
-\ifLuaTeX
+\ifPDFTeX
+  \RequirePackage{graphicx}
+\else\ifLuaTeX
   \RequirePackage{graphicx}
 \else
   \RequirePackage[dvipdfmx]{graphicx}
-\fi
+\fi\fi
 \ifjasse@opt@links
-  \ifLuaTeX
+  \ifPDFTeX
+    \RequirePackage[hidelinks]{hyperref}
+  \else\ifLuaTeX
     \RequirePackage[hidelinks]{hyperref}
   \else
     \RequirePackage[dvipdfmx,hidelinks]{hyperref}
-  \fi
+  \fi\fi
 \else
   \RequirePackage{url}
 \fi
