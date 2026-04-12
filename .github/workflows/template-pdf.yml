@@ -44,13 +44,14 @@ jobs:
           git tag -f template-pdf-latest "$GITHUB_SHA"
           git push --force origin refs/tags/template-pdf-latest
 
-      - name: Publish PDF to GitHub Release
+      - name: Recreate latest GitHub Release
         if: github.event_name != 'pull_request' && github.ref_name == 'main'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: template-pdf-latest
-          name: Latest Modern Template PDF
-          body: |
-            Latest modern JSST2026 template PDF built from `${{ github.sha }}`.
-          files: JSST2026_Template_modern.pdf
-          overwrite_files: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete template-pdf-latest --yes --repo "$GITHUB_REPOSITORY" || true
+          gh release create template-pdf-latest JSST2026_Template_modern.pdf \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Latest Modern Template PDF" \
+            --notes "Latest modern JSST2026 template PDF built from \`${GITHUB_SHA}\`." \
+            --latest
